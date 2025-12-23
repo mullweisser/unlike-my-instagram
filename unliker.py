@@ -89,28 +89,38 @@ def init_client() -> Client:
 def unlike(client: Client):
     global should_terminate
     removed = 0
-    println(f"🎯 Target: Remove {like_removal_amount} liked posts")
+    skipped = 0
+    println(f"🎯 Target: Remove {like_removal_amount} liked reels")
+    println("📌 Note: Only unliking Instagram reels, not normal posts")
 
     while removed < like_removal_amount and not should_terminate:
         # Check for termination request
         if should_terminate:
             println(
-                f"🛑 Script terminated by user. Unliked {removed} posts before termination."
+                f"🛑 Script terminated by user. Unliked {removed} reels before termination."
             )
             break
 
         liked = client.liked_medias()
         count_reached = False
 
-        println("🚀 Beginning deletion of liked posts...")
+        println("🚀 Beginning deletion of liked reels...")
 
         for post in liked:
             # Check for termination request before each operation
             if should_terminate:
                 println(
-                    f"🛑 Script terminated by user. Unliked {removed} posts before termination."
+                    f"🛑 Script terminated by user. Unliked {removed} reels before termination."
                 )
                 return
+
+            # Only unlike if it's a reel (clips)
+            if post.product_type != "clips":
+                skipped += 1
+                println(
+                    f"⏭️  Skipped post {post.id} by @{post.user.username} (product_type: {post.product_type or 'feed'})"
+                )
+                continue
 
             start_time = time.time()
             try:
@@ -119,16 +129,16 @@ def unlike(client: Client):
                 execution_time = round(end_time - start_time, 2)
                 removed += 1
                 println(
-                    f"✅ {removed}: Unliked post {post.id} by @{post.user.username} ({execution_time}s)"
+                    f"✅ {removed}: Unliked reel {post.id} by @{post.user.username} ({execution_time}s)"
                 )
             except Exception as e:
                 end_time = time.time()
                 execution_time = round(end_time - start_time, 2)
                 println(
-                    f"❌ Failed to unlike post {post.id} by @{post.user.username} ({execution_time}s)"
+                    f"❌ Failed to unlike reel {post.id} by @{post.user.username} ({execution_time}s)"
                 )
                 println("⚠️ Rate limit most likely reached. Try again soon.")
-                println(f"📊 Deleted {removed} liked posts.")
+                println(f"📊 Deleted {removed} liked reels. Skipped {skipped} non-reels.")
                 println("🔍 Exception details:")
                 println(str(e))
                 print(output)
@@ -146,13 +156,13 @@ def unlike(client: Client):
             println(f"📊 Grabbed {result_count} more posts.")
             if result_count == 0:
                 println("🎉 No more posts to unlike!")
-                println(f"✅ Successfully deleted {removed} liked posts.")
+                println(f"✅ Successfully deleted {removed} liked reels. Skipped {skipped} non-reels.")
                 break
 
     if not should_terminate:
-        println(f"🏁 Finished deleting {removed} liked posts!")
+        println(f"🏁 Finished deleting {removed} liked reels! Skipped {skipped} non-reels.")
     else:
-        println(f"🛑 Script terminated. Final count: {removed} posts unliked.")
+        println(f"🛑 Script terminated. Final count: {removed} reels unliked, {skipped} non-reels skipped.")
 
 
 def println(line):

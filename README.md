@@ -4,9 +4,9 @@
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-A powerful, secure, and efficient Python script for bulk removing your Instagram likes. Built with modern Python practices and enterprise-grade security features.
+A powerful, secure, and efficient Python script for bulk removing your Instagram likes on reels. Built with modern Python practices and enterprise-grade security features.
 
-**🎯 Purpose**: Clean up your Instagram activity by automatically unliking posts you've previously liked.
+**🎯 Purpose**: Clean up your Instagram activity by automatically unliking Instagram reels you've previously liked. The script only unlikes reels (clips), not regular posts.
 
 ---
 
@@ -15,6 +15,7 @@ A powerful, secure, and efficient Python script for bulk removing your Instagram
 
 ## ✨ Features
 
+-   **🎬 Reel-Specific**: Only unlikes Instagram reels (clips), not regular posts
 -   **🔒 Enhanced Security**: No hardcoded credentials, environment variable configuration
 -   **⚡ Optimized Performance**: Intelligent rate limiting, dynamic delays, execution time tracking
 -   **🛡️ Robust Error Handling**: Graceful Ctrl+C handling, retry mechanisms, user confirmation prompts
@@ -118,16 +119,18 @@ If 2FA is configured for your account:
 
 ## 📊 Configuration Options
 
-| Variable               | Default    | Description                              |
-| ---------------------- | ---------- | ---------------------------------------- |
-| `INSTAGRAM_USERNAME`   | _required_ | Your Instagram username                  |
-| `INSTAGRAM_PASSWORD`   | _required_ | Your Instagram password                  |
-| `INSTAGRAM_MFA_SECRET` | _optional_ | TOTP secret for 2FA (if enabled)         |
-| `LIKE_REMOVAL_AMOUNT`  | 1000       | Maximum number of posts to unlike        |
-| `QUIET_MODE`           | false      | Enable quiet mode (less console output)  |
-| `MIN_DELAY`            | 0.5        | Minimum delay between requests (seconds) |
-| `MAX_DELAY`            | 1.2        | Maximum delay between requests (seconds) |
-| `BATCH_SIZE`           | 50         | Number of posts to process in each batch |
+| Variable               | Default    | Description                                 |
+| ---------------------- | ---------- | ------------------------------------------- |
+| `INSTAGRAM_USERNAME`   | _required_ | Your Instagram username                     |
+| `INSTAGRAM_PASSWORD`   | _required_ | Your Instagram password                     |
+| `INSTAGRAM_MFA_SECRET` | _optional_ | TOTP secret for 2FA (if enabled)            |
+| `LIKE_REMOVAL_AMOUNT`  | 1000       | Maximum number of reels to unlike           |
+| `QUIET_MODE`           | false      | Enable quiet mode (less console output)     |
+| `MIN_DELAY`            | 0.5        | Minimum delay between requests (seconds)    |
+| `MAX_DELAY`            | 1.2        | Maximum delay between requests (seconds)    |
+| `BATCH_SIZE`           | 50         | Number of posts to process in each batch    |
+
+**Note**: The script only unlikes Instagram reels (clips), not regular posts. Regular posts will be skipped and logged.
 
 ## 🚧 Rate Limiting & Safety
 
@@ -149,9 +152,12 @@ The script provides detailed, timestamped logging:
 [15:28:28] 💡 Press Ctrl+C to safely terminate the script at any time
 [15:28:29] ✅ Environment variables loaded successfully
 [15:28:30] ✅ Login successful!
-[15:28:31] ✅ 1: Unliked post 123456789 by @username (1.45s)
-[15:28:33] ✅ 2: Unliked post 987654321 by @another_user (2.12s)
-[15:28:34] ❌ Failed to unlike post 456789123 by @failed_user (0.89s)
+[15:28:31] 🎯 Target: Remove 1000 liked reels
+[15:28:31] 📌 Note: Only unliking Instagram reels, not normal posts
+[15:28:32] ⏭️  Skipped post 123456789 by @username (product_type: feed)
+[15:28:33] ✅ 1: Unliked reel 987654321 by @another_user (1.45s)
+[15:28:35] ✅ 2: Unliked reel 456789123 by @reel_user (2.12s)
+[15:28:36] ❌ Failed to unlike reel 789123456 by @failed_user (0.89s)
 ```
 
 ## 🔧 Troubleshooting
@@ -191,20 +197,22 @@ The script provides detailed, timestamped logging:
 
 The enhanced version typically achieves:
 
--   **15-30 posts per minute** (depending on delay configuration)
+-   **15-30 reels per minute** (depending on delay configuration)
 -   **Precise timing tracking** for each operation
 -   **95%+ success rate** with proper configuration
 -   **Safe termination** preserving all progress
 -   **Detailed execution metrics** with timestamp logging
 -   **Automatic recovery** from temporary issues with clear feedback
+-   **Smart filtering** to skip non-reel posts automatically
 
 ## 🛡️ Safety Features
 
 -   **Graceful termination**: Ctrl+C handling with user confirmation
--   **Progress tracking**: Always know exactly how many posts were processed
+-   **Progress tracking**: Always know exactly how many reels were unliked and how many regular posts were skipped
 -   **Error resilience**: Continues processing even after individual failures
 -   **Rate limit respect**: Automatic detection and handling of Instagram limits
 -   **Session management**: Reduces login frequency and associated risks
+-   **Selective unliking**: Only unlikes reels, preserving likes on regular posts
 
 ## Key updates made:
 
