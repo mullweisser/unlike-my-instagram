@@ -115,13 +115,20 @@ def unlike(client: Client):
                 return
 
             # Only unlike if it's a reel (clips)
-            # Note: product_type should be "clips" for reels, "feed" for normal posts, 
-            # "igtv" for IGTV videos, or empty/None for other post types
+            # Note: According to Instagram API, product_type values are:
+            #   "clips" = reels/clips
+            #   "feed" = normal posts (also default for videos without explicit type)
+            #   "igtv" = IGTV videos
+            #   None/empty = normal posts (when not explicitly set)
             if post.product_type != "clips":
                 skipped += 1
-                product_type_display = post.product_type if post.product_type else "regular post"
+                # Display the actual product_type or a descriptive fallback
+                if post.product_type:
+                    type_display = post.product_type
+                else:
+                    type_display = "feed (default)"
                 println(
-                    f"⏭️  Skipped post {post.id} by @{post.user.username} (type: {product_type_display})"
+                    f"⏭️  Skipped post {post.id} by @{post.user.username} (type: {type_display})"
                 )
                 continue
 
