@@ -154,10 +154,11 @@ The script provides detailed, timestamped logging:
 [15:28:30] ✅ Login successful!
 [15:28:31] 🎯 Target: Remove 1000 liked reels
 [15:28:31] 📌 Note: Only unliking Instagram reels, not normal posts
-[15:28:32] ⏭️  Skipped post 123456789 by @username (product_type: feed)
+[15:28:32] ⏭️  Skipped post 123456789 by @username (type: feed)
 [15:28:33] ✅ 1: Unliked reel 987654321 by @another_user (1.45s)
 [15:28:35] ✅ 2: Unliked reel 456789123 by @reel_user (2.12s)
-[15:28:36] ❌ Failed to unlike reel 789123456 by @failed_user (0.89s)
+[15:28:36] ⏭️  Skipped post 789123456 by @user2 (type: regular post)
+[15:28:37] ❌ Failed to unlike reel 321654987 by @failed_user (0.89s)
 ```
 
 ## 🔧 Troubleshooting

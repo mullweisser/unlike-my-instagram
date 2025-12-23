@@ -115,10 +115,13 @@ def unlike(client: Client):
                 return
 
             # Only unlike if it's a reel (clips)
+            # Note: product_type should be "clips" for reels, "feed" for normal posts, 
+            # "igtv" for IGTV videos, or empty/None for other post types
             if post.product_type != "clips":
                 skipped += 1
+                product_type_display = post.product_type if post.product_type else "regular post"
                 println(
-                    f"⏭️  Skipped post {post.id} by @{post.user.username} (product_type: {post.product_type or 'feed'})"
+                    f"⏭️  Skipped post {post.id} by @{post.user.username} (type: {product_type_display})"
                 )
                 continue
 
